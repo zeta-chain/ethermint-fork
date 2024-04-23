@@ -37,10 +37,6 @@ Ref: https://keepachangelog.com/en/1.0.0/
 
 ## Unreleased
 
-### Features
-
-* (rpc) [#1682](https://github.com/evmos/ethermint/pull/1682) Add config for maximum number of bytes returned from eth_call.
-
 ### State Machine Breaking
 
 - (deps) [#1168](https://github.com/evmos/ethermint/pull/1716) Bump Cosmos-SDK to v0.46.11, Tendermint to v0.34.27, IAVL v0.19.5 and btcd to v0.23.4
@@ -53,15 +49,10 @@ Ref: https://keepachangelog.com/en/1.0.0/
 ### Bug Fixes
 
 - (rpc) [#1688](https://github.com/evmos/ethermint/pull/1688) Align filter rule for `debug_traceBlockByNumber`
-- (rpc) [#1722](https://github.com/evmos/ethermint/pull/1722) Align revert response for `eth_estimateGas` and `eth_call` as Ethereum.
-- (rpc) [#1720](https://github.com/evmos/ethermint/pull/1720) Fix next block fee for historical block and calculate base fee by params.
-- (rpc) [#1685](https://github.com/evmos/ethermint/pull/1685) Fix parse for websocket connID.
-- (rpc) [#1773](https://github.com/evmos/ethermint/pull/1773) Avoid channel get changed when concurrent subscribe happens.
 
 ### Improvements
 
 - (ante) [#1717](https://github.com/evmos/ethermint/pull/1717) Reuse sender recovery result.
-- (cli) [#242](https://github.com/crypto-org-chain/ethermint/pull/242) Integrate tendermint bootstrap cmd.
 - (cli) [#246](https://github.com/crypto-org-chain/ethermint/pull/246) Call app.Close to cleanup resource on graceful shutdown.
 
 

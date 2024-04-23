@@ -24,7 +24,6 @@ import (
 	"math/big"
 	"net"
 	"net/http"
-	"strconv"
 	"sync"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -226,16 +225,8 @@ func (s *websocketsServer) readLoop(wsConn *wsConn) {
 			continue
 		}
 
-		var connID float64
-		switch id := msg["id"].(type) {
-		case string:
-			connID, err = strconv.ParseFloat(id, 64)
-		case float64:
-			connID = id
-		default:
-			err = fmt.Errorf("unknown type")
-		}
-		if err != nil {
+		connID, ok := msg["id"].(float64)
+		if !ok {
 			s.sendErrResponse(
 				wsConn,
 				fmt.Errorf("invalid type for connection ID: %T", msg["id"]).Error(),
@@ -589,12 +580,14 @@ func (api *pubSubAPI) subscribeLogs(wsConn *wsConn, subID rpc.ID, extra interfac
 					api.logger.Debug("event data type mismatch", "type", fmt.Sprintf("%T", event.Data))
 					continue
 				}
-				txLogs, err := evmtypes.DecodeTxLogsFromEvents(dataTx.TxResult.Result.Data)
+
+				txResponse, err := evmtypes.DecodeTxResponse(dataTx.TxResult.Result.Data)
 				if err != nil {
 					api.logger.Error("failed to decode tx response", "error", err.Error())
 					return
 				}
-				logs := rpcfilters.FilterLogs(txLogs, crit.FromBlock, crit.ToBlock, crit.Addresses, crit.Topics)
+
+				logs := rpcfilters.FilterLogs(evmtypes.LogsToEthereum(txResponse.Logs), crit.FromBlock, crit.ToBlock, crit.Addresses, crit.Topics)
 				if len(logs) == 0 {
 					continue
 				}
